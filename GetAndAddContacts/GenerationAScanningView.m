@@ -24,8 +24,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         if (leftBtn == nil && rightBtn == nil) {
-            [self setUI];
             [self setUpSession];
+            [self setUI];
         }
         self.backgroundColor = [UIColor lightGrayColor];
     }
@@ -34,8 +34,9 @@
 
 - (void)setUI{
     leftBtn = [UIButton buttonWithType:(UIButtonTypeSystem)];
-    [leftBtn setTitle:@"x" forState:(UIControlStateNormal)];
+    [leftBtn setTitle:@"X" forState:(UIControlStateNormal)];
     [leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [leftBtn setTitleColor:[UIColor redColor] forState:(UIControlStateNormal)];
     
     leftBtn.frame = CGRectMake(15, 25, 60, 40);
     [self addSubview:leftBtn];
@@ -43,6 +44,7 @@
     rightBtn = [UIButton buttonWithType:(UIButtonTypeSystem)];
     [rightBtn setTitle:@"开/关时光灯" forState:(UIControlStateNormal)];
     [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [rightBtn setTitleColor:[UIColor redColor] forState:(UIControlStateNormal)];
     
     rightBtn.frame = CGRectMake(self.frame.size.width-110, 25, 100, 40);
     [self addSubview:rightBtn];
@@ -100,15 +102,17 @@
                                    AVMetadataObjectTypeCode128Code];
     self.session = session;
     
-    UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - 64)];
+    //加一个蒙层
+    UIView *maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
     
     maskView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     
     [self addSubview:maskView];
     
+    //在蒙层上面扣一个洞
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
     
-    [maskPath appendPath:[[UIBezierPath bezierPathWithRoundedRect:CGRectMake(30, 100 - 64, CGRectGetWidth(self.frame) - 60, 300) cornerRadius:1] bezierPathByReversingPath]];
+    [maskPath appendPath:[[UIBezierPath bezierPathWithRoundedRect:CGRectMake(30, 100, CGRectGetWidth(self.frame) - 60, 300) cornerRadius:1] bezierPathByReversingPath]];
     
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     

@@ -21,6 +21,60 @@
     return instance;
 }
 
+-(void)addContactsToMailList:(NSArray *)contactsArr{
+    
+    for (Contacts *aCon in contactsArr) {
+        if ((NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_8_x_Max)) {
+            [self creatItemBeforIOS10WithName:aCon.conName phone:aCon.conPhone];
+        }else{
+            [self creatItemBeforIOS9WithName:aCon.conName phone:aCon.conPhone];
+        }
+    }
+}
+
+- (void)creatItemBeforIOS9WithName:(NSString *)name phone:(NSString *)phone
+{
+    if((name.length < 1)||(phone.length < 1)){
+        NSLog(@"输入属性不能为空");
+        return;
+    }
+    CFErrorRef error = NULL;
+    
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &error);
+    ABRecordRef newRecord = ABPersonCreate();
+    ABRecordSetValue(newRecord, kABPersonFirstNameProperty, (__bridge CFTypeRef)name, &error);
+    
+    ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    ABMultiValueAddValueAndLabel(multi, (__bridge CFTypeRef)name, kABPersonPhoneMobileLabel, NULL);
+    
+    ABRecordSetValue(newRecord, kABPersonPhoneProperty, multi, &error);
+    CFRelease(multi);
+    
+    ABAddressBookAddRecord(addressBook, newRecord, &error);
+    
+    ABAddressBookSave(addressBook, &error);
+    CFRelease(newRecord);
+    CFRelease(addressBook);
+}
+
+- (void)creatItemBeforIOS10WithName:(NSString *)name phone:(NSString *)phone
+{
+    // 创建对象
+    // 这个里面可以添加多个电话，email，地址等等。 感觉使用率不高，只提供了最常用的属性：姓名+电话，需要时可以自行扩展。
+    CNMutableContact * contact = [[CNMutableContact alloc]init];
+    contact.givenName = name?:@"defaultname";
+    CNLabeledValue *phoneNumber = [CNLabeledValue labeledValueWithLabel:CNLabelPhoneNumberMobile value:[CNPhoneNumber phoneNumberWithStringValue:phone?:@"10086"]];
+    contact.phoneNumbers = @[phoneNumber];
+    
+    // 把对象加到请求中
+    CNSaveRequest * saveRequest = [[CNSaveRequest alloc]init];
+    [saveRequest addContact:contact toContainerWithIdentifier:nil];
+    
+    // 执行请求
+    CNContactStore * store = [[CNContactStore alloc]init];
+    [store executeSaveRequest:saveRequest error:nil];
+}
+
 -(NSArray *)getAllContacts{
     if ((NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_8_x_Max)) {
         [self fetchAddressBookBeforeIOS10];

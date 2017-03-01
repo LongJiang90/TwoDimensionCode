@@ -8,17 +8,22 @@
 
 #import "ViewController.h"
 #import "GetAndAddContacts.h"
+#import "GenerationAScanningView.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource,CNContactPickerDelegate,ABPeoplePickerNavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *systemInfoLabel;
+@property (weak, nonatomic) IBOutlet UILabel *scanLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 - (IBAction)getAllContactsBtnAction:(UIButton *)sender;
 - (IBAction)useSystemBtnAction:(UIButton *)sender;
 - (IBAction)addAContactBtnAction:(UIButton *)sender;
-@property (weak, nonatomic) IBOutlet UILabel *systemInfoLabel;
-
+- (IBAction)scanBtnAction:(UIButton *)sender;
 
 @property (nonatomic,strong) NSMutableArray *allConsArr;
+
+@property (nonatomic,strong) GenerationAScanningView *gescanV;/**< 扫描视图 */
 
 @end
 
@@ -32,6 +37,9 @@
     self.tableView.dataSource  = self;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    [self.view addSubview:self.gescanV];
+    self.gescanV.hidden = YES;
+    self.gescanV.alpha = 0.1;
 }
 
 
@@ -41,11 +49,12 @@
 }
 
 #pragma mark - 按钮响应函数
+//@TODO:获取所有联系人
 - (IBAction)getAllContactsBtnAction:(UIButton *)sender {
     self.allConsArr = [[GetAndAddContacts sharedContacts] getAllContacts].mutableCopy;
     [self.tableView reloadData];
 }
-
+//@TODO:调用系统通讯录
 - (IBAction)useSystemBtnAction:(UIButton *)sender {
     
     if ((NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_8_x_Max)) {
@@ -64,9 +73,31 @@
     
     
 }
-
+//@TODO:新增联系人到通讯录中
 - (IBAction)addAContactBtnAction:(UIButton *)sender {
+    Contacts *aCon = [[Contacts alloc] initWithName:@"张珊" phone:@"15523550589" email:@""];
+    
+    [[GetAndAddContacts sharedContacts] addContactsToMailList:@[aCon]];
 }
+//@TODO:扫描二维码
+- (IBAction)scanBtnAction:(UIButton *)sender {
+    self.gescanV.hidden = NO;
+    [self.gescanV scanningCodeBySucBlock:^(NSString *sucStr) {
+        //获取扫描后的结果
+        self.scanLabel.text = sucStr;
+        [UIView animateWithDuration:1.0 animations:^{
+            self.gescanV.alpha = 0.1;
+        } completion:^(BOOL finished) {
+            self.gescanV.hidden = YES;
+        }];
+    }];
+    [UIView animateWithDuration:1.0 animations:^{
+        self.gescanV.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 #pragma mark - 网络请求
 
 #pragma mark - 协议函数
@@ -87,8 +118,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     NSDictionary *conDic = self.allConsArr[indexPath.row];
-    cell.textLabel.text = conDic[kName];
-    cell.detailTextLabel.text = conDic[kPhoneNum];
+    cell.textLabel.text = [NSString stringWithFormat:@"姓名:%@ 电话:%@",conDic[kName],conDic[kPhoneNum]];
     
     return cell;
 }
@@ -121,6 +151,7 @@
     NSLog(@"%@", phoneNumber);
     
     self.systemInfoLabel.text = [NSString stringWithFormat:@"姓名:%@%@ 电话:%@",lastname, firstname,phoneNumber];
+    self.imageView.image = [self.gescanV generationCodeByStr:self.systemInfoLabel.text size:CGSizeMake(120, 120)];
 }
 
 //取消选择
@@ -143,12 +174,6 @@
     phoneNO = [phoneNO stringByReplacingOccurrencesOfString:@"-" withString:@""];
     NSLog(@"%@", phoneNO);
     self.systemInfoLabel.text = [NSString stringWithFormat:@"姓名:%@%@ 电话:%@",lastName, firstName,phoneNO];
-//    if (phone && [ZXValidateHelper checkTel:phoneNO]) {
-//        phoneNum = phoneNO;
-//        [self.tableView reloadData];
-//        [peoplePicker dismissViewControllerAnimated:YES completion:nil];
-//        return;
-//    }
 }
 
 - (void)peoplePickerNavigationController:(ABPeoplePickerNavigationController*)peoplePicker didSelectPerson:(ABRecordRef)person
@@ -159,6 +184,14 @@
 }
 
 #pragma mark - 组装数据、创建视图、自定义方法
+-(GenerationAScanningView *)gescanV{
+    if (!_gescanV) {
+        _gescanV = [[GenerationAScanningView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _gescanV.frontColor = [UIColor orangeColor];
+        _gescanV.centerImage = [UIImage imageNamed:@"heardImg"];
+    }
+    return _gescanV;
+}
 
 
 

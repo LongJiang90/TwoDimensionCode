@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Contacts.h"
 
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
@@ -24,9 +25,9 @@
 }
 
 + (instancetype)sharedContacts;
-
+/**< 获取所有的通讯录联系人 */
 -(NSArray *)getAllContacts;
-
--(BOOL)AddContactsToMailList:(id)aContacts;
+/**< 新增一个/多个联系人到通讯录中 */
+-(void)addContactsToMailList:(NSArray *)contactsArr;
 
 @end

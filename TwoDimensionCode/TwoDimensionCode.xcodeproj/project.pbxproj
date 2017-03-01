@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F609FB671DF10E800057C087 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = F609FB661DF10E800057C087 /* Contacts.m */; };
+		F6F38BC31DE6F31700101C91 /* GenerationAScanningView.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F38BC21DE6F31700101C91 /* GenerationAScanningView.m */; };
 		F6FD90C41DE58638007D030B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F6FD90C31DE58638007D030B /* main.m */; };
 		F6FD90C71DE58638007D030B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6FD90C61DE58638007D030B /* AppDelegate.m */; };
 		F6FD90CA1DE58638007D030B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6FD90C91DE58638007D030B /* ViewController.m */; };
@@ -28,6 +30,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F609FB651DF10E800057C087 /* Contacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contacts.h; path = ../../GetAndAddContacts/Contacts.h; sourceTree = "<group>"; };
+		F609FB661DF10E800057C087 /* Contacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Contacts.m; path = ../../GetAndAddContacts/Contacts.m; sourceTree = "<group>"; };
+		F6F38BC11DE6F31700101C91 /* GenerationAScanningView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GenerationAScanningView.h; path = ../../GetAndAddContacts/GenerationAScanningView.h; sourceTree = "<group>"; };
+		F6F38BC21DE6F31700101C91 /* GenerationAScanningView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GenerationAScanningView.m; path = ../../GetAndAddContacts/GenerationAScanningView.m; sourceTree = "<group>"; };
 		F6FD90BF1DE58638007D030B /* TwoDimensionCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoDimensionCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6FD90C31DE58638007D030B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F6FD90C51DE58638007D030B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -63,6 +69,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F6F38BC01DE6EB2600101C91 /* 二维码生成、扫描 */ = {
+			isa = PBXGroup;
+			children = (
+				F6F38BC11DE6F31700101C91 /* GenerationAScanningView.h */,
+				F6F38BC21DE6F31700101C91 /* GenerationAScanningView.m */,
+			);
+			name = "二维码生成、扫描";
+			sourceTree = "<group>";
+		};
 		F6FD90B61DE58638007D030B = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +103,7 @@
 				F6FD90C61DE58638007D030B /* AppDelegate.m */,
 				F6FD90C81DE58638007D030B /* ViewController.h */,
 				F6FD90C91DE58638007D030B /* ViewController.m */,
+				F6F38BC01DE6EB2600101C91 /* 二维码生成、扫描 */,
 				F6FD90E71DE5868B007D030B /* 获取、写入联系人 */,
 				F6FD90CB1DE58638007D030B /* Main.storyboard */,
 				F6FD90CE1DE58638007D030B /* Assets.xcassets */,
@@ -120,6 +136,8 @@
 			children = (
 				F6FD90E81DE586F0007D030B /* GetAndAddContacts.h */,
 				F6FD90E91DE586F0007D030B /* GetAndAddContacts.m */,
+				F609FB651DF10E800057C087 /* Contacts.h */,
+				F609FB661DF10E800057C087 /* Contacts.m */,
 			);
 			name = "获取、写入联系人";
 			sourceTree = "<group>";
@@ -227,7 +245,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F38BC31DE6F31700101C91 /* GenerationAScanningView.m in Sources */,
 				F6FD90CA1DE58638007D030B /* ViewController.m in Sources */,
+				F609FB671DF10E800057C087 /* Contacts.m in Sources */,
 				F6FD90EA1DE586F0007D030B /* GetAndAddContacts.m in Sources */,
 				F6FD90C71DE58638007D030B /* AppDelegate.m in Sources */,
 				F6FD90C41DE58638007D030B /* main.m in Sources */,
@@ -431,6 +451,7 @@
 				F6FD90E31DE58638007D030B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F6FD90E41DE58638007D030B /* Build configuration list for PBXNativeTarget "TwoDimensionCodeUITests" */ = {
 			isa = XCConfigurationList;
@@ -439,6 +460,7 @@
 				F6FD90E61DE58638007D030B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
